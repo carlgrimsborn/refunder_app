@@ -9,15 +9,30 @@ export const decrement: Action<number> = ({ state }, decrementBy) => {
   state.counter -= decrementBy;
 };
 
+export const setToken: Action<string> = ({state}, value) => {
+  state.token = value 
+}
+
 type Input = {
   username: string;
   password: string;
+  onSuccess: () => void;
+  onError: () => void
 };
-export const login: AsyncAction<Input> = (
-  { state },
-  { username, password }
+type Output = {
+  data: {
+    data: {
+      access_token: string
+    }
+  },
+  status: number
+}
+export const login: AsyncAction<Output, Input> = async (
+  { state, actions },
+  { username, password, onSuccess, onError }
 ) => {
-  axios
+  try {
+ await axios
     .post(
       'https://www.refunder.se/app/user/login',
       {
@@ -25,9 +40,20 @@ export const login: AsyncAction<Input> = (
         password,
         grant_type: 'password',
       },
-      { headers: { Authorization: 'Basic' } }
-    )
-    .then((response) => {
-      console.log(response);
+      { headers: { Authorization: 'Basic aXBob25lOkFsMkwyOFpPeTJvOTFxcnY0alMzNjRJN3Q2UEhVMEEy' } }
+    ).then((response) => {
+      
+      if (response){
+      console.log(response, "response");
+      if(response.data.data.access_token && response.status === 200) {
+        actions.setToken(response.data.data.access_token)
+        console.log(state.token, 'token')
+        onSuccess()
+      } 
+    }
     });
+  }  catch(err) {
+    console.log(err)
+    onError()
+  }
 };

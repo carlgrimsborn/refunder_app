@@ -53,11 +53,11 @@ const Stack = createNativeStackNavigator<RootStackParamList>();
 function RootNavigator() {
   return (
     <Stack.Navigator>
-      {/* <Stack.Screen
+      <Stack.Screen
         name="Login"
         component={Login}
         options={{ headerShown: false }}
-      ></Stack.Screen> */}
+      ></Stack.Screen>
       <Stack.Screen
         name="Root"
         component={BottomTabNavigator}
