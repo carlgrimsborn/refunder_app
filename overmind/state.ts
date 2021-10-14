@@ -1,11 +1,28 @@
+
+export type RefunderStore = {
+  avg_review_score: number
+  campaign_types: string[]
+  cashback: string
+  cashback_description: string
+  href: string
+  id: string
+  logo: string
+  name: string
+  normal_cashback: string
+  normal_cashback_description: string
+  normal_cashback_value: string
+  num_reviews: any
+  short_description: string
+}
+
 type State = {
-  counter: number;
   token: string | null;
   isLoggedIn : boolean
+  stores: RefunderStore[] | null
 };
 
 export const state: State = {
-  counter: 0,
   token: null,
-  isLoggedIn: false
+  isLoggedIn: false,
+  stores: null
 };

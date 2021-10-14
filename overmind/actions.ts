@@ -1,13 +1,7 @@
 import axios from 'axios';
 import { Action, AsyncAction } from 'overmind';
-
-export const increment: Action<number> = ({ state }, incrementBy) => {
-  state.counter += incrementBy;
-};
-
-export const decrement: Action<number> = ({ state }, decrementBy) => {
-  state.counter -= decrementBy;
-};
+import { ViewPropsAndroid } from 'react-native';
+import { RefunderStore } from './state';
 
 export const setToken: Action<string> = ({state}, value) => {
   state.token = value 
@@ -65,4 +59,44 @@ export const login: AsyncAction<Output, Input> = async (
 export const logout : Action = ({state}) => {
   state.token = null
   state.isLoggedIn = false
+  state.stores = null
+}
+
+export const getCashbackNumber = (value : RefunderStore) => parseInt(value.cashback)
+
+export const getStores : AsyncAction<RefunderStore[], string> = async ({state}, searchWord) => {
+  try {
+  const resp = await axios.get('https://www.refunder.se/app/search/stores',{
+    params: {
+      query: searchWord
+    },
+    headers: {
+      Authorization: `Bearer ${state.token}`
+    }
+  
+  })
+    let respObject: RefunderStore[] = resp.data.data.stores
+   
+    state.stores =  respObject.sort((a,b)=> 
+    getCashbackNumber(a) - getCashbackNumber(b)
+  )
+    console.log(state.stores, "state stores")
+  
+  console.log(resp, 'resp search')
+} catch(err) {
+    console.log('search function error', err)
+  }
+}
+
+export const getStoreInfo : AsyncAction<any, string> = async ({state},id) => {
+  try {
+   const resp = await axios.get('https://www.refunder.se/app/stores/'+id, {
+      headers: {
+        Authorization: `Bearer ${state.token}`
+      }
+    })
+    console.log('reponse store', resp)
+  } catch(error) {
+    console.log(error)
+  }
 }
