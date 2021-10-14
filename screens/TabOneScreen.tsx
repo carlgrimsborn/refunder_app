@@ -1,16 +1,15 @@
 import * as React from 'react';
 import { Button, StyleSheet } from 'react-native';
 
-import EditScreenInfo from '../components/EditScreenInfo';
 import { Text, View } from '../components/Themed';
-import { useOvermindAction, useOvermindState } from '../overmind';
+import { useActions, useState } from '../overmind';
 import { RootTabScreenProps } from '../types';
 
 export default function TabOneScreen({
   navigation,
 }: RootTabScreenProps<'TabOne'>) {
-  const { counter } = useOvermindState();
-  const { increment, decrement } = useOvermindAction();
+  const { counter } = useState();
+  const { increment, decrement } = useActions();
   return (
     <View style={styles.container}>
       <View>

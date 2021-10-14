@@ -10,9 +10,7 @@ import { config } from './overmind';
 import { Provider } from 'overmind-react';
 import { createOvermind } from 'overmind';
 
-const overmind = createOvermind(config, {
-  devtools: 'http://localhost:19002',
-});
+const overmind = createOvermind(config);
 
 export default function App() {
   const isLoadingComplete = useCachedResources();

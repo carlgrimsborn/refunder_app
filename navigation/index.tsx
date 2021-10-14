@@ -16,7 +16,8 @@ import { ColorSchemeName, Pressable } from 'react-native';
 
 import Colors from '../constants/Colors';
 import useColorScheme from '../hooks/useColorScheme';
-import { useOvermindState } from '../overmind';
+
+import Login from '../screens/Login';
 import ModalScreen from '../screens/ModalScreen';
 import NotFoundScreen from '../screens/NotFoundScreen';
 import TabOneScreen from '../screens/TabOneScreen';
@@ -52,6 +53,11 @@ const Stack = createNativeStackNavigator<RootStackParamList>();
 function RootNavigator() {
   return (
     <Stack.Navigator>
+      {/* <Stack.Screen
+        name="Login"
+        component={Login}
+        options={{ headerShown: false }}
+      ></Stack.Screen> */}
       <Stack.Screen
         name="Root"
         component={BottomTabNavigator}
