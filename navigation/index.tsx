@@ -28,12 +28,15 @@ import {
   RootTabScreenProps,
 } from '../types';
 import LinkingConfiguration from './LinkingConfiguration';
+import { useState } from '../overmind';
 
 export default function Navigation({
   colorScheme,
 }: {
   colorScheme: ColorSchemeName;
 }) {
+  const { isLoggedIn } = useState()
+  if (isLoggedIn ){
   return (
     <NavigationContainer
       linking={LinkingConfiguration}
@@ -41,7 +44,11 @@ export default function Navigation({
     >
       <RootNavigator />
     </NavigationContainer>
-  );
+  );} else {return(
+    <NavigationContainer theme={colorScheme === 'dark' ? DarkTheme : DefaultTheme}>
+      <LoginNavigator></LoginNavigator>
+    </NavigationContainer>)
+  }
 }
 
 /**
@@ -53,11 +60,6 @@ const Stack = createNativeStackNavigator<RootStackParamList>();
 function RootNavigator() {
   return (
     <Stack.Navigator>
-      <Stack.Screen
-        name="Login"
-        component={Login}
-        options={{ headerShown: false }}
-      ></Stack.Screen>
       <Stack.Screen
         name="Root"
         component={BottomTabNavigator}
@@ -73,6 +75,18 @@ function RootNavigator() {
       </Stack.Group>
     </Stack.Navigator>
   );
+}
+
+function LoginNavigator() {
+  return (
+    <Stack.Navigator>
+         <Stack.Screen
+        name="Login"
+        component={Login}
+        options={{ headerShown: false }}
+      ></Stack.Screen>
+    </Stack.Navigator>
+  )
 }
 
 /**

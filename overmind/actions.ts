@@ -12,6 +12,9 @@ export const decrement: Action<number> = ({ state }, decrementBy) => {
 export const setToken: Action<string> = ({state}, value) => {
   state.token = value 
 }
+export const setLoggedIn : Action<boolean> = ({state}, value) => {
+  state.isLoggedIn = value
+}
 
 type Input = {
   username: string;
@@ -47,6 +50,7 @@ export const login: AsyncAction<Output, Input> = async (
       console.log(response, "response");
       if(response.data.data.access_token && response.status === 200) {
         actions.setToken(response.data.data.access_token)
+        actions.setLoggedIn(true)
         console.log(state.token, 'token')
         onSuccess()
       } 
@@ -57,3 +61,8 @@ export const login: AsyncAction<Output, Input> = async (
     onError()
   }
 };
+
+export const logout : Action = ({state}) => {
+  state.token = null
+  state.isLoggedIn = false
+}
